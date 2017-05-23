@@ -1,5 +1,6 @@
 package com.blanke.commonlib.base.network.interceptor;
 
+import com.blanke.commonlib.CommonConfig;
 import com.blanke.commonlib.util.LogUtil;
 
 import java.io.IOException;
@@ -15,13 +16,14 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class ApiLoggingInterceptor implements Interceptor {
     private HttpLoggingInterceptor mHttpLoggingInterceptor;
 
-    public ApiLoggingInterceptor() {
+    public ApiLoggingInterceptor(final String httpLogKey) {
         mHttpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                LogUtil.d("OkHttp", message);
+                LogUtil.d(httpLogKey, message);
             }
         });
+        mHttpLoggingInterceptor.setLevel(CommonConfig.HTTP_LOG_LEVEL);
     }
 
     @Override

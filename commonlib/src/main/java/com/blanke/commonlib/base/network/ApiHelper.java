@@ -12,8 +12,10 @@ import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
-
-public class ApiHelper {
+/**
+ * 相对抽象的，不依赖业务的，包装okHttpClient和Retrofit建造者
+ */
+class ApiHelper {
     private String baseUrl;
     private int readTimeOut = 3000;
     private int connectTimeOut = 3000;
@@ -56,6 +58,7 @@ public class ApiHelper {
         for (Converter.Factory converterFactory : converterFactories) {
             reBuilder.addConverterFactory(converterFactory);
         }
+        mRetrofit = reBuilder.build();
         return mRetrofit;
     }
 
@@ -125,8 +128,8 @@ public class ApiHelper {
         }
 
         public ApiHelper build() {
-            if(TextUtils.isEmpty(baseUrl)){
-                // TODO: 2017/3/17 抛异常
+            if (TextUtils.isEmpty(baseUrl)) {
+                throw new NullPointerException("baseUrl is empty!!");
             }
 
             return new ApiHelper(this);

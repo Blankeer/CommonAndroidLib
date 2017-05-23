@@ -3,11 +3,16 @@ package com.blanke.commonandroidlib;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.blanke.commonandroidlib.mvp.MainContract;
+import com.blanke.commonandroidlib.mvp.MainPresenter;
+import com.blanke.commonlib.base.BaseActivity;
+
+public class MainActivity extends BaseActivity
+        implements MainContract.MainView {
 
     private TextView mTextMessage;
 
@@ -31,15 +36,42 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
+    private MainPresenter mainPresenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int getLayout() {
+        return R.layout.activity_main;
+    }
 
+    @Override
+    public void initData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mTextMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().login("1", "2");
+            }
+        });
+
     }
 
+    @Override
+    public MainContract.MainPresenter getPresenter() {
+        if (mainPresenter == null) {
+            mainPresenter = new MainPresenter();
+        }
+        return mainPresenter;
+    }
+
+    @Override
+    public void onLoginResult(String info) {
+        mTextMessage.setText(info);
+    }
 }

@@ -4,18 +4,13 @@ import com.blanke.commonlib.util.RxLeakUtil;
 
 import java.lang.ref.WeakReference;
 
-import rx.Subscription;
 
 public class BasePresenter<V extends BaseView> {
     private WeakReference<V> view;
-    private RxLeakUtil mRxLeakUtil;//主要处理调用model层的逻辑防止rx的内存泄露
+    protected RxLeakUtil mRxLeakUtil;//主要处理调用model层的逻辑防止rx的内存泄露
 
     public BasePresenter() {
         mRxLeakUtil = new RxLeakUtil();
-    }
-
-    protected void addSubScription(Subscription subScription) {
-        mRxLeakUtil.add(subScription);
     }
 
     public V getView() {
@@ -32,5 +27,6 @@ public class BasePresenter<V extends BaseView> {
         mRxLeakUtil.clear();
         view.clear();
         view = null;
+        mRxLeakUtil = null;
     }
 }

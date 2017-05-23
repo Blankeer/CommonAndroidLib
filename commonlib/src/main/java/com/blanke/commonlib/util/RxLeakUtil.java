@@ -1,26 +1,26 @@
 package com.blanke.commonlib.util;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by blanke on 2017/3/17.
- * rx的内存泄露处理工具，当前主要是CompositeSubscription来处理，需要手动调用clear
+ * rx的内存泄露处理工具，当前主要是 CompositeDisposable 来处理，需要手动调用clear
  */
 
 public class RxLeakUtil {
-    private CompositeSubscription mCompositeSubscription;//保存subscription,销毁时取消订阅，防止leak
+    private CompositeDisposable mCompositeDisposable;//保存subscription,销毁时取消订阅，防止leak
 
     public RxLeakUtil() {
-        mCompositeSubscription = new CompositeSubscription();
+        mCompositeDisposable = new CompositeDisposable();
     }
 
-    public Subscription add(Subscription subScription) {
-        mCompositeSubscription.add(subScription);
-        return subScription;
+    public Disposable add(Disposable disposable) {
+        mCompositeDisposable.add(disposable);
+        return disposable;
     }
 
     public void clear() {
-        mCompositeSubscription.unsubscribe();
+        mCompositeDisposable.dispose();
     }
 }
