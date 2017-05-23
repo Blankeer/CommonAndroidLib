@@ -48,5 +48,7 @@ dependencies {
     compile "me.yokeyword:fragmentation:$rootProject.fragmentationVersion"
     
     compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+
     compile "org.greenrobot:eventbus:$rootProject.eventbusVersion"
 }
